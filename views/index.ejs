@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafeteria website</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="stylesheet" href="css/enhanced-style.css">
+    <link rel="stylesheet" href="css/convo.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- header section starts  -->
+
+<body>
+  <header class="header">
+    <a href="/" class="logo"><img src="images/logo.png" alt="Logo" /></a>
+    <nav class="navbar">
+      <a href="#">home</a>
+      <a href="#about">about</a>
+      <a href="menu">menu</a>
+      <a href="feedback">feedback</a>
+      <a href="#contact">contact</a>
+      <% if (name) { %>
+    <a href="api/users/signout">Log Out</a>
+  <% } else { %>
+    <a href="signin">Sign In</a>
+  <% } %>
+    </nav>
+
+
+  </header>
+    <!-- header section ends -->
+
+
+    <!-- Home section starts  -->
+     <br>
+     <br>
+    <section class="home" id="home">
+        <div class="content">
+            <h3>Healthy Food in the morning <span style="font-size: 54px;color: green;"><%= name %></span></h3><br>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod harum ipsum deleniti eos laborum corrupti!</p>
+            <a href="#" class="btn">get yours now</a>
+        </div>
+    </section>
+    <!-- Home section ends  -->
+
+    <!-- about section starts  -->
+    <section class="about" id="about">
+        <h1 class="heading"><span>about</span>us</h1>
+
+    <div class="row">
+        <div class="image">
+            <img src="images/about-img.jpeg" alt="">
+
+        </div>
+        <div class="content">
+            <h3>what makes our food special</h3>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eum tenetur quo, voluptatem cumque cupiditate quas odit dolores quae veniam natus ullam facere, maiores inventore eveniet? Vero officiis odit eum nam.</p>
+            <a href="#" class="btn">learn more</a>
+        </div>
+    </div>
+
+    </section>
+    <!-- about section ends  -->
+
+    <!-- menu section starts  -->
+
+    <section class="menu" id="menu">
+        <h1 class="heading"> our <span>Food</span></h1>
+        <div class="box-container">
+            <div class="box">
+                <img src="images/menu-1.png" alt="">
+                <h3>tasty and healthy</h3>
+                    <div class="price">Rs.15.99 <span>20.99</span>                        
+                    </div>
+                    <a href="#" class="btn">Cookies</a>
+                
+            </div>
+            <div class="box">
+                <img src="images/menu-2.png" alt="">
+                <h3>tasty and healthy</h3>
+                    <div class="price">Rs.15.99 <span>20.99</span>                        
+                    </div>
+                    <a href="#" class="btn">Dosa</a>
+                
+            </div>
+
+            <div class="box">
+                <img src="images/menu-3.png" alt="">
+                <h3>tasty and healthy</h3>
+                    <div class="price">Rs.15.99 <span>20.99</span>                        
+                    </div>
+                    <a href="#" class="btn">Paratha</a>
+                
+            </div>
+            <div class="box">
+                <img src="images/menu-4.png" alt="">
+                <h3>tasty and healthy</h3>
+                    <div class="price">Rs.15.99 <span>20.99</span>                        
+                    </div>
+                    <a href="#" class="btn">Coffee</a>
+                
+            </div>
+            <div class="box">
+                <img src="images/menu-5.png" alt="">
+                <h3>tasty and healthy</h3>
+                    <div class="price">Rs.85.99 <span>20.99</span>                        
+                    </div>
+                    <a href="#" class="btn">Tea</a>
+                
+            </div>
+            <div class="box">
+                <img src="images/menu-6.png" alt="">
+                <h3>tasty and healthy</h3>
+                    <div class="price">Rs.45.99 <span>20.99</span>                        
+                    </div>
+                    <a href="#" class="btn">Fried Rice</a>
+                
+            </div>
+        </div>
+    </section>
+ 
+
+    <section class="review" id="review">
+        <h1 class="heading">customer's <span>review</span></h1>
+        <div class="box-container">
+
+            <div class="box">
+                <img src="images/quote-img.png" alt="" class="quote">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ipsum obcaecati dolorem deleniti cupiditate perferendis beatae? Perferendis porro assumenda at quasi quas fugiat maxime, facere, voluptates officia natus minus vel.</p>
+                <img src="images/pic-1.png" class="user" alt="">
+                <h3>john deo</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>  
+                </div>
+            </div>
+            <div class="box">
+                <img src="images/quote-img.png" alt="" class="quote">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ipsum obcaecati dolorem deleniti cupiditate perferendis beatae? Perferendis porro assumenda at quasi quas fugiat maxime, facere, voluptates officia natus minus vel.</p>
+                <img src="images/pic-2.png" class="user" alt="">
+                <h3>john deo</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>  
+                </div>
+            </div>
+            <div class="box">
+                <img src="images/quote-img.png" alt="" class="quote">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ipsum obcaecati dolorem deleniti cupiditate perferendis beatae? Perferendis porro assumenda at quasi quas fugiat maxime, facere, voluptates officia natus minus vel.</p>
+                <img src="images/pic-3.png" class="user" alt="">
+                <h3>john deo</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>  
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="contact" id="contact">
+        <h1 class="heading"><span>contact</span>us</h1>
+        <div class="row">
+            <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15562.116654066003!2d80.19171212454798!3d12.809045255401626!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525a085887f209%3A0x669938f52f4c3ed3!2sPudupakkam%20Panchayat%20Office!5e0!3m2!1sen!2sin!4v1643724951428!5m2!1sen!2sin"  allowfullscreen="" loading="lazy"></iframe>
+            <form action="">
+                <h3>get in touch</h3>
+                <div class="inputBox">
+                    <input type="text" placeholder="name">
+                </div>
+                <div class="inputBox">
+                    <input type="email" placeholder="email">
+                </div>
+                <div class="inputBox">
+                    <input type="number" placeholder="number">
+                </div>
+                <input type="submit" value="contact now" class="btn"> 
+            </form>
+        </div>
+    </section>
+
+    <!-- contact section end  -->
+
+    <!-- footer section begins  -->
+    <section class="footer">
+        <div class="share">
+            <a href="#" class="fab fa-facebook-f"></a>
+            <a href="#" class="fab fa-twitter"></a>
+            <a href="#" class="fab fa-instagram"></a>
+            <a href="#" class="fab fa-linkedin"></a>
+            <a href="#" class="fab fa-pinterest"></a>
+        </div>
+        <div class="links">
+            <a href="#home">home</a>
+            <a href="#about">about</a>
+            <a href="menu">menu</a>
+            <a href="feedback">feedback</a>
+            <a href="#review">review</a>
+            <a href="#contact">contact</a>
+        </div>
+
+        <div class="credit">created by <span>Chahat</span>| all rights reserved</div>
+    </section>
+
+     <!-- CHAT BAR BLOCK -->
+       <div class="chat-bar-collapsible">
+  <button id="chat-button" type="button" class="collapsible">
+    <span>💬 Chat with Cafe Caffeine</span>
+    <i id="chat-icon" style="color: #fff;" class="fas fa-comments"></i>
+  </button>
+  <div class="content">
+    <div class="full-chat-block">
+      <!-- Message Container -->
+      <div class="outer-container">
+        <div class="chat-container">
+          <!-- Messages -->
+          <div id="chatbox">
+            <h5 id="chat-timestamp"></h5>
+            <p id="botStarterMessage" class="botText"><span>Loading...</span></p>
+          </div>
+          <!-- User input box -->
+          <div class="chat-bar-input-block">
+            <div id="userInput">
+              <input
+                id="textInput"
+                class="input-box"
+                type="text"
+                name="msg"
+                placeholder="Type a message and press Enter..."
+              />
+            </div>
+            <div class="chat-bar-icons">
+              <i
+                id="send-icon"
+                class="fa fa-fw fa-paper-plane"
+                onclick="sendButton()"
+              ></i>
+            </div>
+          </div>
+          <div id="chat-bar-bottom">
+            <p></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FontAwesome + jQuery -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- JS -->
+<script src="js/convo.js"></script>
+<link rel="stylesheet" href="convo.css" />
+
+
+
+     
+
+
+
+ 
+
+<script src="js/index.js"></script>
+<!-- <script src="js/convo.js"></script> -->
+</body>
+</html>

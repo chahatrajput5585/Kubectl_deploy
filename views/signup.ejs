@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up | THE CAFEINE Restaurant</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/css/new-style.css" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600;700&display=swap");
+
+      .restaurant-title {
+        font-family: "Pacifico", cursive;
+        background: linear-gradient(135deg, #d4af37, #ffd700, #ffed4a);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        animation: shimmer 3s ease-in-out infinite alternate;
+      }
+
+      @keyframes shimmer {
+        0% { background-position: -200% center; }
+        100% { background-position: 200% center; }
+      }
+
+      .bg-overlay {
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        background-size: 400% 400%;
+        animation: gradientShift 8s ease infinite;
+        z-index: -1;
+      }
+
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+      }
+
+      .floating-animation {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+      }
+
+      .fade-in-up {
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .input-group {
+        position: relative;
+        margin-bottom: 1.5rem;
+      }
+
+      .input-group input {
+        font-family: 'Poppins', sans-serif;
+        padding: 1rem 1rem 1rem 3rem;
+        border: 2px solid transparent;
+        border-radius: 12px;
+        background: rgba(247, 250, 252, 0.8);
+        transition: all 0.3s ease;
+      }
+
+      .input-group input:focus {
+        border-color: #764ba2;
+        box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+        background: white;
+        transform: translateY(-2px);
+      }
+
+      .input-group i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #764ba2;
+        font-size: 1.1rem;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-primary::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s ease;
+      }
+
+      .btn-primary:hover::before {
+        left: 100%;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(118, 75, 162, 0.3);
+      }
+
+      .coffee-icon {
+        font-size: 4rem;
+        color: #d4af37;
+        animation: bounce 2s infinite;
+        margin-bottom: 1rem;
+      }
+
+      @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-10px); }
+        60% { transform: translateY(-5px); }
+      }
+
+      .particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: linear-gradient(45deg, #d4af37, #ffd700);
+        border-radius: 50%;
+        animation: particle-float 4s infinite linear;
+      }
+
+      @keyframes particle-float {
+        0% {
+          opacity: 0;
+          transform: translateY(100vh) rotate(0deg);
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-100px) rotate(360deg);
+        }
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        overflow-x: hidden;
+      }
+
+      .welcome-text {
+        background: linear-gradient(135deg, #764ba2, #667eea);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    </style>
+  </head>
+  <body class="relative flex items-center justify-center min-h-screen">
+    <!-- Animated Background -->
+    <div class="bg-overlay"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particle" style="left: 15%; animation-delay: 0.5s;"></div>
+    <div class="particle" style="left: 25%; animation-delay: 1.5s;"></div>
+    <div class="particle" style="left: 35%; animation-delay: 2.5s;"></div>
+    <div class="particle" style="left: 45%; animation-delay: 3.5s;"></div>
+    <div class="particle" style="left: 55%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 65%; animation-delay: 1s;"></div>
+    <div class="particle" style="left: 75%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 85%; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 95%; animation-delay: 4s;"></div>
+
+    <div class="container mx-auto px-4 py-8">
+      <!-- Restaurant Heading -->
+      <div class="text-center mb-12 fade-in-up">
+        <i class="fas fa-utensils coffee-icon"></i>
+        <h1 class="restaurant-title text-5xl md:text-6xl font-bold mb-4">
+          THE CAFEINE RESTAURANT
+        </h1>
+        <p class="text-white text-lg opacity-90">Join our culinary community today</p>
+      </div>
+      
+      <!-- Sign Up Form -->
+      <div class="glass-card p-10 rounded-3xl w-full max-w-md mx-auto floating-animation fade-in-up" style="animation-delay: 0.3s;">
+        <div class="text-center mb-8">
+          <h2 class="text-3xl font-bold text-gray-800 mb-2">Create Account</h2>
+          <p class="text-gray-600">Start your delicious journey with us</p>
+        </div>
+        
+        <form id="signup-form" class="space-y-5">
+          <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input
+              type="text"
+              id="signup-name"
+              name="name"
+              placeholder="Enter your full name"
+              class="w-full outline-none text-gray-700"
+              required
+            />
+          </div>
+          
+          <div class="input-group">
+            <i class="fas fa-envelope"></i>
+            <input
+              type="email"
+              id="signup-email"
+              name="email"
+              placeholder="Enter your email address"
+              class="w-full outline-none text-gray-700"
+              required
+            />
+          </div>
+          
+          <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input
+              type="password"
+              id="signup-password"
+              name="password"
+              placeholder="Create a strong password"
+              class="w-full outline-none text-gray-700"
+              required
+            />
+          </div>
+          
+          <button
+            type="submit"
+            class="btn-primary w-full text-white font-semibold py-3 rounded-xl transition-all duration-300"
+          >
+            <i class="fas fa-user-plus mr-2"></i>
+            Create Your Account
+          </button>
+        </form>
+        
+        <div id="signup-error" class="mt-4 text-center text-sm text-red-500 hidden bg-red-50 p-3 rounded-lg border border-red-200"></div>
+        
+        <div class="mt-8 text-center">
+          <p class="text-gray-600 mb-4">Already part of our family?</p>
+          <a
+            href="/signin"
+            class="inline-flex items-center px-4 py-2 text-sm font-medium text-purple-600 hover:text-purple-800 transition-colors duration-200"
+          >
+            <i class="fas fa-sign-in-alt mr-2"></i>
+            Sign In to Your Account
+          </a>
+        </div>
+        
+        <div class="mt-6 flex items-center justify-center space-x-4 text-sm text-gray-500">
+          <span>Protected</span>
+          <i class="fas fa-shield-alt text-green-500"></i>
+          <span>Verified</span>
+          <i class="fas fa-check-circle text-blue-500"></i>
+          <span>Trusted</span>
+        </div>
+        
+        <div class="mt-6 text-center">
+          <div class="text-xs text-gray-500 leading-relaxed">
+            <p class="welcome-text font-semibold">🎉 Welcome to our gourmet experience!</p>
+            <p class="mt-2">By signing up, you agree to our terms and privacy policy</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript for signup functionality -->
+    <script>
+      const signupForm = document.getElementById("signup-form");
+      const errorMessage = document.getElementById("signup-error");
+
+      signupForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(signupForm);
+        const data = {
+          name: formData.get("name"),
+          email: formData.get("email"),
+          password: formData.get("password"),
+        };
+        
+        try {
+          const response = await fetch("/api/users/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+
+          const text = await response.text();
+          const result = JSON.parse(text);
+          
+          if (response.ok) {
+            // Show success message and redirect
+            window.location.href = "/signin?message=Account created successfully! Please sign in.";
+          } else {
+            errorMessage.textContent = result.message || "Registration failed. Please try again.";
+            errorMessage.classList.remove("hidden");
+          }
+        } catch (error) {
+          errorMessage.textContent = "An error occurred. Please check your connection and try again.";
+          errorMessage.classList.remove("hidden");
+        }
+      });
+    </script>
+  </body>
+</html>

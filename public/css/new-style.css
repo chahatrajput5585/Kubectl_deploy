@@ -1,0 +1,97 @@
+/* ===== Global Styles ===== */
+body {
+  background: #000; /* Solid black background */
+  color: #f5f5f5; /* Light text for readability */
+  font-family: "Poppins", sans-serif;
+  line-height: 1.6;
+  position: relative;
+  min-height: 100vh;
+}
+
+body.dark {
+  background: linear-gradient(
+    to bottom,
+    #0d0d0d,
+    #1a1a1a
+  ); /* Smooth dark gradient */
+  color: #e5e7eb;
+}
+
+/* ===== Navbar ===== */
+header nav a {
+  transition: all 0.3s ease;
+}
+header nav a:hover {
+  color: #fbbf24; /* Amber-400 */
+  border-bottom: 2px solid #fbbf24;
+}
+
+/* Stars */
+.star {
+  transition: transform 0.2s ease;
+}
+.star:hover {
+  transform: scale(1.2);
+}
+
+/* ===== Container ===== */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem;
+}
+
+/* ===== Form Styling ===== */
+form input {
+  transition: all 0.3s ease;
+  background-color: #111;
+  color: #fff;
+  border: 1px solid #333;
+}
+
+form input:focus {
+  box-shadow: 0 0 8px rgba(217, 119, 6, 0.5); /* Amber glow */
+  border-color: #d97706;
+}
+
+button {
+  background: linear-gradient(90deg, #d97706, #f59e0b);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #b45309, #d97706);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  header nav a {
+    display: block;
+    margin: 8px 0;
+  }
+}
