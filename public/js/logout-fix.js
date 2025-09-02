@@ -132,28 +132,30 @@ function handleLogout(event) {
 
 // Auto-bind logout links when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-  // Find all logout links
+  // Only bind logout functionality if user is logged in
   const logoutLinks = document.querySelectorAll('a[href*="signout"], a[href*="logout"]');
   
-  logoutLinks.forEach(link => {
-    // Remove existing event listeners and add enhanced one
-    const newLink = link.cloneNode(true);
-    link.parentNode.replaceChild(newLink, link);
+  if (logoutLinks.length > 0) {
+    logoutLinks.forEach(link => {
+      // Remove existing event listeners and add enhanced one
+      const newLink = link.cloneNode(true);
+      link.parentNode.replaceChild(newLink, link);
+      
+      newLink.addEventListener('click', handleLogout);
+      console.log('✅ Enhanced logout bound to:', newLink.href);
+    });
     
-    newLink.addEventListener('click', handleLogout);
-    console.log('✅ Enhanced logout bound to:', newLink.href);
-  });
-  
-  // Add keyboard shortcut for logout (Ctrl+L)
-  document.addEventListener('keydown', function(e) {
-    if (e.ctrlKey && e.key === 'l') {
-      e.preventDefault();
-      const isLoggedIn = document.querySelector('a[href*="signout"]');
-      if (isLoggedIn) {
-        handleLogout();
+    // Add keyboard shortcut for logout (Ctrl+L) only if logged in
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.key === 'l') {
+        e.preventDefault();
+        const isLoggedIn = document.querySelector('a[href*="signout"]');
+        if (isLoggedIn) {
+          handleLogout();
+        }
       }
-    }
-  });
+    });
+  }
 });
 
 // Export for global access

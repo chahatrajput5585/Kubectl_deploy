@@ -15,7 +15,16 @@ const viewRouters = require("./routers/view/view-router");
 const api = require("./routers/api/api");
 
 const app = express();
-app.use(cors());
+
+// Trust proxy for AWS Load Balancer
+if (process.env.TRUST_PROXY === 'true') {
+  app.set('trust proxy', 1);
+}
+
+app.use(cors({
+  credentials: true,
+  origin: true
+}));
 
 // app.use(morgan("combined"));
 app.use(express.json());

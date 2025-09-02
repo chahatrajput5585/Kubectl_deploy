@@ -12,40 +12,30 @@ const signoutHandler = async (req, res, next) => {
     console.log("🚪 Logout request received from:", req.get('host'));
     console.log("🍪 Current cookies:", req.cookies);
     
-    // Multiple cookie clearing strategies for Kubernetes/AWS environment
+    // Cookie clearing strategy for AWS Kubernetes environment
     const cookieOptions = {
       httpOnly: true,
-      secure: false, // Set to false for AWS load balancer
+      secure: process.env.COOKIE_SECURE === 'true' || (process.env.NODE_ENV === "production" && process.env.COOKIE_SECURE !== 'false'),
       sameSite: 'lax',
       path: '/'
     };
     
-    // Strategy 1: Clear with matching options
+    // Clear with consistent options (matching login)
     res.clearCookie("jwt", cookieOptions);
     
-    // Strategy 2: Clear with production options
+    // Fallback clearing for different environments
     res.clearCookie("jwt", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: false, // Fallback for load balancer SSL termination
       sameSite: 'lax',
       path: '/'
     });
     
-    // Strategy 3: Clear without options (fallback)
-    res.clearCookie("jwt");
-    
-    // Strategy 4: Set expired cookie with all variations
-    const expiredOptions = {
+    // Set expired cookie to ensure clearing
+    res.cookie("jwt", "", {
       ...cookieOptions,
       expires: new Date(0),
       maxAge: 0
-    };
-    
-    res.cookie("jwt", "", expiredOptions);
-    res.cookie("jwt", "deleted", {
-      expires: new Date(0),
-      maxAge: 0,
-      path: '/'
     });
     
     // Add headers to prevent caching
@@ -118,7 +108,7 @@ const signinHandler = async (req, res, next) => {
     const cookieOptions = {
       expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.COOKIE_SECURE === 'true' || (process.env.NODE_ENV === "production" && process.env.COOKIE_SECURE !== 'false'),
       sameSite: 'lax',
       path: '/'
     };
