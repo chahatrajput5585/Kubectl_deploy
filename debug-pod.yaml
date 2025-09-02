@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongodb-debug-pod
+spec:
+  restartPolicy: Never
+  containers:
+    - name: debug-container
+      image: mongo:7-jammy
+      command: ["sleep", "3600"]  # Keep container running for 1 hour
+      env:
+        - name: MONGODB_URI
+          value: "mongodb://mongodb-service:27017/restaurant"
