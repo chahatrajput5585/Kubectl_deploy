@@ -9,33 +9,66 @@ const getUserById = async (id) => {
 
 const signoutHandler = async (req, res, next) => {
   try {
-    // Clear the JWT cookie with all possible configurations
+    console.log("🚪 Logout request received from:", req.get('host'));
+    console.log("🍪 Current cookies:", req.cookies);
+    
+    // Multiple cookie clearing strategies for Kubernetes/AWS environment
     const cookieOptions = {
+      httpOnly: true,
+      secure: false, // Set to false for AWS load balancer
+      sameSite: 'lax',
+      path: '/'
+    };
+    
+    // Strategy 1: Clear with matching options
+    res.clearCookie("jwt", cookieOptions);
+    
+    // Strategy 2: Clear with production options
+    res.clearCookie("jwt", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: 'lax',
-      path: '/',
-      domain: undefined // Let browser determine domain
-    };
+      path: '/'
+    });
     
-    // Clear cookie with same options used during login
-    res.clearCookie("jwt", cookieOptions);
-    
-    // Also try clearing without options (fallback)
+    // Strategy 3: Clear without options (fallback)
     res.clearCookie("jwt");
     
-    // Set expired cookie as additional fallback
-    res.cookie("jwt", "", {
+    // Strategy 4: Set expired cookie with all variations
+    const expiredOptions = {
       ...cookieOptions,
       expires: new Date(0),
       maxAge: 0
+    };
+    
+    res.cookie("jwt", "", expiredOptions);
+    res.cookie("jwt", "deleted", {
+      expires: new Date(0),
+      maxAge: 0,
+      path: '/'
     });
     
-    console.log("User logged out successfully");
+    // Add headers to prevent caching
+    res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.header('Pragma', 'no-cache');
+    res.header('Expires', '0');
+    
+    console.log("✅ User logged out successfully");
+    
+    // Check if it's an AJAX request
+    if (req.xhr || req.headers.accept?.indexOf('json') > -1) {
+      return res.status(200).json({
+        success: true,
+        message: "Logged out successfully",
+        redirect: "/"
+      });
+    }
+    
     return res.redirect("/");
   } catch (error) {
-    console.error("Signout error:", error);
+    console.error("❌ Signout error:", error);
     res.status(500).json({
+      success: false,
       message: "Internal server error",
     });
   }

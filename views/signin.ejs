@@ -22,13 +22,17 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         animation: shimmer 3s ease-in-out infinite alternate;
       }
 
       @keyframes shimmer {
-        0% { background-position: -200% center; }
-        100% { background-position: 200% center; }
+        0% {
+          background-position: -200% center;
+        }
+        100% {
+          background-position: 200% center;
+        }
       }
 
       .bg-overlay {
@@ -41,9 +45,15 @@
       }
 
       @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
       }
 
       .glass-card {
@@ -58,8 +68,13 @@
       }
 
       @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-20px); }
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
       }
 
       .fade-in-up {
@@ -83,7 +98,7 @@
       }
 
       .input-group input {
-        font-family: 'Poppins', sans-serif;
+        font-family: "Poppins", sans-serif;
         padding: 1rem 1rem 1rem 3rem;
         border: 2px solid transparent;
         border-radius: 12px;
@@ -120,13 +135,18 @@
       }
 
       .btn-primary::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
         transition: left 0.5s ease;
       }
 
@@ -147,9 +167,19 @@
       }
 
       @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-        40% { transform: translateY(-10px); }
-        60% { transform: translateY(-5px); }
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-10px);
+        }
+        60% {
+          transform: translateY(-5px);
+        }
       }
 
       .particle {
@@ -179,7 +209,7 @@
       }
 
       body {
-        font-family: 'Poppins', sans-serif;
+        font-family: "Poppins", sans-serif;
         overflow-x: hidden;
       }
     </style>
@@ -187,17 +217,17 @@
   <body class="relative flex items-center justify-center min-h-screen">
     <!-- Animated Background -->
     <div class="bg-overlay"></div>
-    
+
     <!-- Floating Particles -->
-    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-    <div class="particle" style="left: 20%; animation-delay: 1s;"></div>
-    <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
-    <div class="particle" style="left: 40%; animation-delay: 3s;"></div>
-    <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
-    <div class="particle" style="left: 60%; animation-delay: 1.5s;"></div>
-    <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
-    <div class="particle" style="left: 80%; animation-delay: 3.5s;"></div>
-    <div class="particle" style="left: 90%; animation-delay: 0.5s;"></div>
+    <div class="particle" style="left: 10%; animation-delay: 0s"></div>
+    <div class="particle" style="left: 20%; animation-delay: 1s"></div>
+    <div class="particle" style="left: 30%; animation-delay: 2s"></div>
+    <div class="particle" style="left: 40%; animation-delay: 3s"></div>
+    <div class="particle" style="left: 50%; animation-delay: 4s"></div>
+    <div class="particle" style="left: 60%; animation-delay: 1.5s"></div>
+    <div class="particle" style="left: 70%; animation-delay: 2.5s"></div>
+    <div class="particle" style="left: 80%; animation-delay: 3.5s"></div>
+    <div class="particle" style="left: 90%; animation-delay: 0.5s"></div>
 
     <div class="container mx-auto px-4 py-8">
       <!-- Restaurant Heading -->
@@ -206,26 +236,37 @@
         <h1 class="restaurant-title text-5xl md:text-6xl font-bold mb-4">
           THE CAFEINE RESTAURANT
         </h1>
-        <p class="text-white text-lg opacity-90">Welcome back to your favorite café experience</p>
+        <p class="text-white text-lg opacity-90">
+          Welcome back to your favorite café experience
+        </p>
       </div>
-      
+
       <!-- Sign In Form -->
-      <div class="glass-card p-10 rounded-3xl w-full max-w-md mx-auto floating-animation fade-in-up" style="animation-delay: 0.3s;">
+      <div
+        class="glass-card p-10 rounded-3xl w-full max-w-md mx-auto floating-animation fade-in-up"
+        style="animation-delay: 0.3s"
+      >
         <div class="text-center mb-8">
           <% if (isAdmin) { %>
-            <h2 class="text-3xl font-bold text-gray-800 mb-2">Admin Login</h2>
-            <p class="text-gray-600">Access the admin dashboard</p>
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-4 text-sm">
-              <p class="text-blue-800 font-medium mb-1">Default Admin Credentials:</p>
-              <p class="text-blue-600">Email: admin@restaurant.com</p>
-              <p class="text-blue-600">Password: admin123</p>
-            </div>
+          <h2 class="text-3xl font-bold text-gray-800 mb-2">Admin Login</h2>
+          <p class="text-gray-600">Access the admin dashboard</p>
+          <div
+            class="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-4 text-sm"
+          >
+            <p class="text-blue-800 font-medium mb-1">
+              Default Admin Credentials:
+            </p>
+            <p class="text-blue-600">Email: admin@restaurant.com</p>
+            <p class="text-blue-600">Password: admin123</p>
+          </div>
           <% } else { %>
-            <h2 class="text-3xl font-bold text-gray-800 mb-2">Sign In</h2>
-            <p class="text-gray-600">Enter your credentials to access your account</p>
+          <h2 class="text-3xl font-bold text-gray-800 mb-2">Sign In</h2>
+          <p class="text-gray-600">
+            Enter your credentials to access your account
+          </p>
           <% } %>
         </div>
-        
+
         <form id="signin-form" class="space-y-6">
           <div class="input-group">
             <i class="fas fa-envelope"></i>
@@ -238,7 +279,7 @@
               required
             />
           </div>
-          
+
           <div class="input-group">
             <i class="fas fa-lock"></i>
             <input
@@ -250,7 +291,7 @@
               required
             />
           </div>
-          
+
           <button
             type="submit"
             class="btn-primary w-full text-white font-semibold py-3 rounded-xl transition-all duration-300"
@@ -259,9 +300,12 @@
             Sign In to Your Account
           </button>
         </form>
-        
-        <div id="signin-error" class="mt-4 text-center text-sm text-red-500 hidden bg-red-50 p-3 rounded-lg border border-red-200"></div>
-        
+
+        <div
+          id="signin-error"
+          class="mt-4 text-center text-sm text-red-500 hidden bg-red-50 p-3 rounded-lg border border-red-200"
+        ></div>
+
         <div class="mt-8 text-center">
           <p class="text-gray-600 mb-4">New to our restaurant?</p>
           <a
@@ -272,8 +316,10 @@
             Create New Account
           </a>
         </div>
-        
-        <div class="mt-6 flex items-center justify-center space-x-4 text-sm text-gray-500">
+
+        <div
+          class="mt-6 flex items-center justify-center space-x-4 text-sm text-gray-500"
+        >
           <span>Secure</span>
           <i class="fas fa-shield-alt text-green-500"></i>
           <span>Fast</span>
@@ -299,12 +345,12 @@
       // });
 
       // Pre-fill admin credentials if this is admin login
-      <% if (isAdmin) { %>
-      document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('signin-email').value = 'admin@restaurant.com';
-        document.getElementById('signin-password').value = 'admin123';
-      });
-      <% } %>
+      // <% if (isAdmin) { %>
+      // document.addEventListener('DOMContentLoaded', function() {
+      //   document.getElementById('signin-email').value = 'admin@restaurant.com';
+      //   document.getElementById('signin-password').value = 'admin123';
+      // });
+      // <% } %>
 
       signinForm.addEventListener("submit", async (e) => {
         e.preventDefault();
