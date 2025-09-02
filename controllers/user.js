@@ -111,20 +111,26 @@ const signinHandler = async (req, res, next) => {
       }
     );
 
-    const cookieOptions = {
-      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-      httpOnly: true,
-      secure:
-        process.env.COOKIE_SECURE === "true" ||
-        (process.env.NODE_ENV === "production" &&
-          process.env.COOKIE_SECURE !== "false"),
-      sameSite: "lax",
-      path: "/",
-      ...(process.env.COOKIE_DOMAIN
-        ? { domain: process.env.COOKIE_DOMAIN }
-        : {}),
-    };
+    // const cookieOptions = {
+    //   expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+    //   httpOnly: true,
+    //   secure:
+    //     process.env.COOKIE_SECURE === "true" ||
+    //     (process.env.NODE_ENV === "production" &&
+    //       process.env.COOKIE_SECURE !== "false"),
+    //   sameSite: "lax",
+    //   path: "/",
+    //   ...(process.env.COOKIE_DOMAIN
+    //     ? { domain: process.env.COOKIE_DOMAIN }
+    //     : {}),
+    // };
 
+    const cookieOptions = {
+      httpOnly: false, // so you can see it in document.cookie (not secure, but easier for debugging)
+      secure: false, // works on localhost without HTTPS
+      sameSite: "lax", // safe default, still allows most flows
+      path: "/", // available across the app
+    };
     console.log("Setting login cookie with options:", cookieOptions);
 
     res.cookie("jwt", token, cookieOptions);
