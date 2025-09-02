@@ -234,7 +234,7 @@ function createMenuItemHTML(item, index) {
       <div class="category-badge ${categoryClass}">${item.type}</div>
       ${popularBadge}
       ${discountBadge}
-      <img src="${item.image}" alt="${item.name}" onerror="this.src='images/placeholder.jpg'">
+      <img src="${item.image}" alt="${item.name}">
       <div class="item-content">
         <h3>${item.name}</h3>
         <div class="rating">
@@ -295,10 +295,14 @@ function updateCart() {
     div.className = "flex justify-between items-center border-b pb-2";
     div.innerHTML = `
       <div class="flex items-center">
-        <img src="${item.image}" alt="${item.name}" class="w-10 h-10 object-cover rounded mr-3">
+        <img src="${item.image}" alt="${
+      item.name
+    }" class="w-10 h-10 object-cover rounded mr-3">
         <div>
           <span class="font-medium">${item.name}</span>
-          <div class="text-sm text-gray-500">₹${item.price} x ${item.quantity || 1}</div>
+          <div class="text-sm text-gray-500">₹${item.price} x ${
+      item.quantity || 1
+    }</div>
         </div>
       </div>
       <div class="flex items-center space-x-2">
@@ -369,8 +373,10 @@ function updateActiveFilter(filter) {
 // Enhanced cart functionality
 function addToCart(event, itemId) {
   const button = event.target;
-  const item = menuItems.find(menuItem => (menuItem.id || menuItem._id) === itemId);
-  
+  const item = menuItems.find(
+    (menuItem) => (menuItem.id || menuItem._id) === itemId
+  );
+
   if (!item) {
     showToast("Item not found!", "error");
     return;
@@ -382,7 +388,9 @@ function addToCart(event, itemId) {
   button.disabled = true;
 
   setTimeout(() => {
-    const existingItem = cart.find((cartItem) => cartItem.id === item.id || cartItem.id === item._id);
+    const existingItem = cart.find(
+      (cartItem) => cartItem.id === item.id || cartItem.id === item._id
+    );
 
     if (existingItem) {
       existingItem.quantity = (existingItem.quantity || 1) + 1;
@@ -532,7 +540,7 @@ async function checkout() {
 
   try {
     const orderData = {
-      items: cart.map(item => ({
+      items: cart.map((item) => ({
         menuItem: item.id || item._id,
         name: item.name,
         price: item.price,
@@ -543,10 +551,10 @@ async function checkout() {
       phoneNumber: "1234567890", // You can add a form for this
     };
 
-    const response = await fetch('/api/orders', {
-      method: 'POST',
+    const response = await fetch("/api/orders", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(orderData),
     });
@@ -564,7 +572,7 @@ async function checkout() {
       showToast(data.message || "Error placing order", "error");
     }
   } catch (error) {
-    console.error('Checkout error:', error);
+    console.error("Checkout error:", error);
     showToast("Error placing order. Please try again.", "error");
   }
 }
@@ -608,9 +616,9 @@ function hideLoading() {
 // Load menu from database
 async function loadMenuFromDatabase() {
   try {
-    const response = await fetch('/api/menu');
+    const response = await fetch("/api/menu");
     const data = await response.json();
-    
+
     if (data.success && data.data.length > 0) {
       // Update the global menuItems array with database data
       window.menuItems = data.data.map((item, index) => ({
@@ -618,16 +626,16 @@ async function loadMenuFromDatabase() {
         id: item._id, // Use MongoDB _id as id
         rating: item.rating || 4.0, // Default rating if not set
       }));
-      
+
       // Update the global variable reference
       menuItems.length = 0;
       menuItems.push(...window.menuItems);
-      
-      console.log('Menu loaded from database:', menuItems.length, 'items');
+
+      console.log("Menu loaded from database:", menuItems.length, "items");
     }
   } catch (error) {
-    console.error('Error loading menu from database:', error);
-    console.log('Using fallback hardcoded menu');
+    console.error("Error loading menu from database:", error);
+    console.log("Using fallback hardcoded menu");
   }
 }
 

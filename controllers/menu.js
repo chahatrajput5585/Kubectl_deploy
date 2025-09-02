@@ -5,11 +5,11 @@ const getAllMenuItems = async (req, res) => {
     // For admin users, show all items including inactive ones
     const isAdmin = req.user && req.user.isAdmin;
     const filter = isAdmin ? {} : { isActive: true };
-    
+
     const menuItems = await Menu.find(filter)
       .populate("addedBy", "name")
       .sort({ createdAt: -1 });
-    
+
     res.status(200).json({
       success: true,
       data: menuItems,
@@ -59,11 +59,10 @@ const updateMenuItem = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    const menuItem = await Menu.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true, runValidators: true }
-    );
+    const menuItem = await Menu.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!menuItem) {
       return res.status(404).json({
