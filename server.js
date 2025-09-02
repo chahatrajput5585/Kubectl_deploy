@@ -1,4 +1,6 @@
 const path = require("path");
+const cors = require("cors");
+
 require("dotenv").config({
   path: path.join(__dirname, ".env"),
   override: true,
@@ -13,6 +15,7 @@ const viewRouters = require("./routers/view/view-router");
 const api = require("./routers/api/api");
 
 const app = express();
+app.use(cors());
 
 // app.use(morgan("combined"));
 app.use(express.json());
