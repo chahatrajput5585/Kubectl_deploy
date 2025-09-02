@@ -9,13 +9,32 @@ const getUserById = async (id) => {
 
 const signoutHandler = async (req, res, next) => {
   try {
-    res.clearCookie("jwt", {
+    // Clear the JWT cookie with all possible configurations
+    const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
+      sameSite: 'lax',
+      path: '/',
+      domain: undefined // Let browser determine domain
+    };
+    
+    // Clear cookie with same options used during login
+    res.clearCookie("jwt", cookieOptions);
+    
+    // Also try clearing without options (fallback)
+    res.clearCookie("jwt");
+    
+    // Set expired cookie as additional fallback
+    res.cookie("jwt", "", {
+      ...cookieOptions,
+      expires: new Date(0),
+      maxAge: 0
     });
+    
+    console.log("User logged out successfully");
     return res.redirect("/");
   } catch (error) {
-    console.error("Signin error:", error);
+    console.error("Signout error:", error);
     res.status(500).json({
       message: "Internal server error",
     });
@@ -66,10 +85,12 @@ const signinHandler = async (req, res, next) => {
     const cookieOptions = {
       expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: 'lax',
+      path: '/'
     };
 
-    // console.log("token=>", token);
-    // console.log("cookieOptions=>", cookieOptions);
+    console.log("Setting login cookie with options:", cookieOptions);
 
     res.cookie("jwt", token, cookieOptions);
     // 4. Success: Return response to trigger redirect
