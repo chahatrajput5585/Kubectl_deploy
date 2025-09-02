@@ -345,12 +345,12 @@
       // });
 
       // Pre-fill admin credentials if this is admin login
-      // <% if (isAdmin) { %>
-      // document.addEventListener('DOMContentLoaded', function() {
-      //   document.getElementById('signin-email').value = 'admin@restaurant.com';
-      //   document.getElementById('signin-password').value = 'admin123';
-      // });
-      // <% } %>
+      <% if (isAdmin) { %>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('signin-email').value = 'admin@restaurant.com';
+        document.getElementById('signin-password').value = 'admin123';
+      });
+      <% } %>
 
       signinForm.addEventListener("submit", async (e) => {
         e.preventDefault();
