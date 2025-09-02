@@ -30,6 +30,9 @@ spec:
               value: "true"
             - name: COOKIE_SECURE
               value: "false"
+            # Optionally set this to your root domain to make cookies work on subdomains too, e.g. ".example.com"
+            # - name: COOKIE_DOMAIN
+            #   value: ".your-domain.com"
 ---
 apiVersion: v1
 kind: Service

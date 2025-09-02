@@ -9,51 +9,57 @@ const getUserById = async (id) => {
 
 const signoutHandler = async (req, res, next) => {
   try {
-    console.log("🚪 Logout request received from:", req.get('host'));
+    console.log("🚪 Logout request received from:", req.get("host"));
     console.log("🍪 Current cookies:", req.cookies);
-    
+
     // Cookie clearing strategy for AWS Kubernetes environment
     const cookieOptions = {
       httpOnly: true,
-      secure: process.env.COOKIE_SECURE === 'true' || (process.env.NODE_ENV === "production" && process.env.COOKIE_SECURE !== 'false'),
-      sameSite: 'lax',
-      path: '/'
+      secure:
+        process.env.COOKIE_SECURE === "true" ||
+        (process.env.NODE_ENV === "production" &&
+          process.env.COOKIE_SECURE !== "false"),
+      sameSite: "lax",
+      path: "/",
+      ...(process.env.COOKIE_DOMAIN
+        ? { domain: process.env.COOKIE_DOMAIN }
+        : {}),
     };
-    
+
     // Clear with consistent options (matching login)
     res.clearCookie("jwt", cookieOptions);
-    
+
     // Fallback clearing for different environments
     res.clearCookie("jwt", {
       httpOnly: true,
       secure: false, // Fallback for load balancer SSL termination
-      sameSite: 'lax',
-      path: '/'
+      sameSite: "lax",
+      path: "/",
     });
-    
+
     // Set expired cookie to ensure clearing
     res.cookie("jwt", "", {
       ...cookieOptions,
       expires: new Date(0),
-      maxAge: 0
+      maxAge: 0,
     });
-    
+
     // Add headers to prevent caching
-    res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.header('Pragma', 'no-cache');
-    res.header('Expires', '0');
-    
+    res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.header("Pragma", "no-cache");
+    res.header("Expires", "0");
+
     console.log("✅ User logged out successfully");
-    
+
     // Check if it's an AJAX request
-    if (req.xhr || req.headers.accept?.indexOf('json') > -1) {
+    if (req.xhr || req.headers.accept?.indexOf("json") > -1) {
       return res.status(200).json({
         success: true,
         message: "Logged out successfully",
-        redirect: "/"
+        redirect: "/",
       });
     }
-    
+
     return res.redirect("/");
   } catch (error) {
     console.error("❌ Signout error:", error);
@@ -108,9 +114,15 @@ const signinHandler = async (req, res, next) => {
     const cookieOptions = {
       expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
       httpOnly: true,
-      secure: process.env.COOKIE_SECURE === 'true' || (process.env.NODE_ENV === "production" && process.env.COOKIE_SECURE !== 'false'),
-      sameSite: 'lax',
-      path: '/'
+      secure:
+        process.env.COOKIE_SECURE === "true" ||
+        (process.env.NODE_ENV === "production" &&
+          process.env.COOKIE_SECURE !== "false"),
+      sameSite: "lax",
+      path: "/",
+      ...(process.env.COOKIE_DOMAIN
+        ? { domain: process.env.COOKIE_DOMAIN }
+        : {}),
     };
 
     console.log("Setting login cookie with options:", cookieOptions);
@@ -120,6 +132,8 @@ const signinHandler = async (req, res, next) => {
     res.status(200).json({
       data: {
         message: "Alright",
+        token,
+        cookieOptions,
       },
     });
   } catch (error) {

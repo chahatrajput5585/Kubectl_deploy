@@ -215,7 +215,9 @@
     </div>
 
     <script src="/js/admin-menu.js"></script>
-    <script src="/js/logout-fix.js"></script>
+<% if (user || name) { %>
+<script src="/js/logout-fix.js"></script>
+<% } %>
     <% if (locals.openModal) { %>
     <script>
       // Auto-open the modal if we came from the "Add New Item" link

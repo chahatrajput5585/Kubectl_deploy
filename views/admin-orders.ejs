@@ -66,6 +66,8 @@
     </div>
 
     <script src="/js/admin-orders.js"></script>
-    <script src="/js/logout-fix.js"></script>
+<% if (user || name) { %>
+<script src="/js/logout-fix.js"></script>
+<% } %>
 </body>
 </html>

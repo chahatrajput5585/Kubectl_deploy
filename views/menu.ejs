@@ -221,6 +221,8 @@
     </section>
     
     <!-- Enhanced logout script -->
-    <script src="js/logout-fix.js"></script>
+<% if (user || name) { %>
+<script src="js/logout-fix.js"></script>
+<% } %>
   </body>
 </html>
