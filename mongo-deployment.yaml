@@ -1,0 +1,150 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+  labels:
+    app: mongodb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard  # Use your cluster's default storage class
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-init
+  labels:
+    app: mongodb
+data:
+  mongo-init.js: |
+    // MongoDB initialization script for Restaurant Management System
+    print('🍽️ Initializing Restaurant Database...');
+    
+    // Switch to restaurant database
+    db = db.getSiblingDB('restaurant');
+    
+    print('📊 Creating collections with validation...');
+    
+    // Create collections and indexes
+    db.createCollection('users');
+    db.createCollection('menus');
+    db.createCollection('orders');
+    db.createCollection('feedbacks');
+    
+    // Create indexes
+    db.users.createIndex({ "email": 1 }, { unique: true });
+    db.menus.createIndex({ "type": 1 });
+    db.orders.createIndex({ "user": 1 });
+    db.feedbacks.createIndex({ "user": 1 });
+    
+    print('✅ Database initialization completed successfully!');
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+  labels:
+    app: mongodb
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+        version: v1
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:7-jammy
+          ports:
+            - name: mongodb
+              containerPort: 27017
+              protocol: TCP
+          env:
+            - name: MONGO_INITDB_DATABASE
+              value: "restaurant"
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: username
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: password
+          volumeMounts:
+            - name: mongodb-storage
+              mountPath: /data/db
+            - name: mongodb-init
+              mountPath: /docker-entrypoint-initdb.d
+          livenessProbe:
+            exec:
+              command:
+                - mongosh
+                - --quiet
+                - --eval
+                - "db.runCommand('ping')"
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - mongosh
+                - --quiet
+                - --eval
+                - "db.runCommand('ping')"
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+      volumes:
+        - name: mongodb-storage
+          persistentVolumeClaim:
+            claimName: mongodb-pvc
+        - name: mongodb-init
+          configMap:
+            name: mongodb-init
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb-secret
+  labels:
+    app: mongodb
+type: Opaque
+data:
+  username: YWRtaW4=  # base64 encoded: admin
+  password: bW9uZ29fcGFzcw==  # base64 encoded: mongo_pass
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+  labels:
+    app: mongodb
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - name: mongodb
+      port: 27017
+      targetPort: mongodb
+      protocol: TCP
+  type: ClusterIP

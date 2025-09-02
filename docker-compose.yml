@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  # Restaurant Application
+  restaurant-app:
+    build: .
+    container_name: restaurant_app
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/restaurant
+      - JWT_SECRET=my-strong-password-for-jwt-key
+      - NODE_ENV=production
+      - PORT=3000
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      seed-db:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    volumes:
+      - ./public:/app/public:ro
+    networks:
+      - restaurant-network
+    healthcheck:
+      test: ["CMD", "node", "healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # MongoDB Database
+  mongodb:
+    image: mongo:7-jammy
+    container_name: restaurant_mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=restaurant
+    volumes:
+      - mongodb_data:/data/db
+      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    restart: unless-stopped
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/restaurant --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks:
+      - restaurant-network
+
+  # Database Seeder (runs once to populate initial data)
+  seed-db:
+    build: .
+    container_name: restaurant_seeder
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/restaurant
+      - JWT_SECRET=my-strong-password-for-jwt-key
+      - NODE_ENV=production
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    command: ["node", "scripts/seed-database.js"]
+    restart: "no"
+    networks:
+      - restaurant-network
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  restaurant-network:
+    driver: bridge

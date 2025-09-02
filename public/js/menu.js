@@ -247,7 +247,7 @@ function createMenuItemHTML(item, index) {
         </div>
 <button 
   class="add-to-cart" 
-  onclick="addToCart(event, ${index})" 
+  onclick="addToCart(event, '${item.id || item._id}')" 
   onmouseover="this.innerHTML='<i class=\'fas fa-plus\'></i> Add to Cart'" 
   onmouseout="this.innerHTML='<i class=\'fas fa-shopping-cart\'></i> Add to Cart'">
   <i class="fas fa-shopping-cart"></i> Add to Cart
@@ -290,13 +290,23 @@ function updateCart() {
 
   let total = 0;
   cart.forEach((item, i) => {
-    total += item.price;
+    total += item.price * (item.quantity || 1);
     const div = document.createElement("div");
     div.className = "flex justify-between items-center border-b pb-2";
     div.innerHTML = `
-      <span>${item.name}</span>
-      <span>₹${item.price}</span>
-      <button onclick="removeFromCart(${i})" class="text-red-500 text-sm ml-2">Remove</button>
+      <div class="flex items-center">
+        <img src="${item.image}" alt="${item.name}" class="w-10 h-10 object-cover rounded mr-3">
+        <div>
+          <span class="font-medium">${item.name}</span>
+          <div class="text-sm text-gray-500">₹${item.price} x ${item.quantity || 1}</div>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <span class="font-bold">₹${item.price * (item.quantity || 1)}</span>
+        <button onclick="removeFromCart(${i})" class="text-red-500 text-sm hover:text-red-700 transition-colors">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
     `;
     cartItemsDiv.appendChild(div);
   });
@@ -357,9 +367,14 @@ function updateActiveFilter(filter) {
 }
 
 // Enhanced cart functionality
-function addToCart(event, index) {
+function addToCart(event, itemId) {
   const button = event.target;
-  const item = menuItems[index];
+  const item = menuItems.find(menuItem => (menuItem.id || menuItem._id) === itemId);
+  
+  if (!item) {
+    showToast("Item not found!", "error");
+    return;
+  }
 
   // Add loading state to button
   const originalHTML = button.innerHTML;
@@ -367,12 +382,12 @@ function addToCart(event, index) {
   button.disabled = true;
 
   setTimeout(() => {
-    const existingItem = cart.find((cartItem) => cartItem.id === item.id);
+    const existingItem = cart.find((cartItem) => cartItem.id === item.id || cartItem.id === item._id);
 
     if (existingItem) {
       existingItem.quantity = (existingItem.quantity || 1) + 1;
     } else {
-      cart.push({ ...item, quantity: 1 });
+      cart.push({ ...item, id: item.id || item._id, quantity: 1 });
     }
 
     updateCartCount();
@@ -507,7 +522,7 @@ function clearCart() {
 }
 
 // Enhanced checkout
-function checkout() {
+async function checkout() {
   if (cart.length === 0) {
     showToast("Your cart is empty!", "error");
     return;
@@ -515,15 +530,43 @@ function checkout() {
 
   showToast("Processing your order...", "info");
 
-  // Simulate order processing
-  setTimeout(() => {
-    showToast("🎉 Order placed successfully!", "success");
-    cart = [];
-    updateCartCount();
-    updateCartUI();
-    saveCart();
-    toggleCart();
-  }, 2000);
+  try {
+    const orderData = {
+      items: cart.map(item => ({
+        menuItem: item.id || item._id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity || 1,
+        image: item.image,
+      })),
+      deliveryAddress: "Default Address", // You can add a form for this
+      phoneNumber: "1234567890", // You can add a form for this
+    };
+
+    const response = await fetch('/api/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(orderData),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      showToast("🎉 Order placed successfully!", "success");
+      cart = [];
+      updateCartCount();
+      updateCartUI();
+      saveCart();
+      toggleCart();
+    } else {
+      showToast(data.message || "Error placing order", "error");
+    }
+  } catch (error) {
+    console.error('Checkout error:', error);
+    showToast("Error placing order. Please try again.", "error");
+  }
 }
 
 // Save cart to localStorage
@@ -562,8 +605,35 @@ function hideLoading() {
   }
 }
 
+// Load menu from database
+async function loadMenuFromDatabase() {
+  try {
+    const response = await fetch('/api/menu');
+    const data = await response.json();
+    
+    if (data.success && data.data.length > 0) {
+      // Update the global menuItems array with database data
+      window.menuItems = data.data.map((item, index) => ({
+        ...item,
+        id: item._id, // Use MongoDB _id as id
+        rating: item.rating || 4.0, // Default rating if not set
+      }));
+      
+      // Update the global variable reference
+      menuItems.length = 0;
+      menuItems.push(...window.menuItems);
+      
+      console.log('Menu loaded from database:', menuItems.length, 'items');
+    }
+  } catch (error) {
+    console.error('Error loading menu from database:', error);
+    console.log('Using fallback hardcoded menu');
+  }
+}
+
 // Initialize on DOM load
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+  await loadMenuFromDatabase();
   renderMenu("all");
   updateCartCount();
   updateCartUI();

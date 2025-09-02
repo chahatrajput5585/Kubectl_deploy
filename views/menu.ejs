@@ -24,15 +24,27 @@
     <header class="header">
       <a href="/" class="logo"><img src="images/logo.png" alt="Logo" /></a>
       <nav class="navbar">
-        <a href="/">home</a>
-        <a href="/#about">about</a>
-        <a href="menu" style="color: var(--main-color)">menu</a>
-        <a href="feedback">feedback</a>
-        <a href="/#contact">contact</a>
-        <% if (name) { %>
-        <a href="api/users/signout">Log Out</a>
+        <% if (user && user.isAdmin) { %>
+          <!-- Admin user: only show admin dashboard and logout -->
+          <a href="/admin" style="color: #ff6b6b; font-weight: bold;">Admin Dashboard</a>
+          <a href="api/users/signout">Log Out</a>
+        <% } else if (name) { %>
+          <!-- Regular logged-in user: show normal navigation -->
+          <a href="/">home</a>
+          <a href="/#about">about</a>
+          <a href="menu" style="color: var(--main-color)">menu</a>
+          <a href="feedback">feedback</a>
+          <a href="/#contact">contact</a>
+          <a href="/my-orders">My Orders</a>
+          <a href="api/users/signout">Log Out</a>
         <% } else { %>
-        <a href="signin">Sign In</a>
+          <!-- Not logged in: show public navigation -->
+          <a href="/">home</a>
+          <a href="/#about">about</a>
+          <a href="menu" style="color: var(--main-color)">menu</a>
+          <a href="feedback">feedback</a>
+          <a href="/#contact">contact</a>
+          <a href="signin">Sign In</a>
         <% } %>
 
         <!-- Cart Icon -->

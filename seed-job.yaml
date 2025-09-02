@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: restaurant-seed-job
+  labels:
+    app: restaurant-seeder
+spec:
+  template:
+    metadata:
+      labels:
+        app: restaurant-seeder
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: restaurant-seeder
+          image: chahatrajput3008/restaurant-project-restaurant-app:latest
+          command: ["node", "scripts/seed-database.js"]
+          env:
+            - name: MONGODB_URI
+              value: "mongodb://mongodb-service:27017/restaurant"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: restaurant-secrets
+                  key: jwt-secret
+            - name: NODE_ENV
+              value: "production"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+      initContainers:
+        - name: wait-for-mongodb
+          image: busybox:1.35
+          command: ['sh', '-c', 'until nc -z mongodb-service 27017; do echo "Waiting for MongoDB..."; sleep 5; done; echo "MongoDB is ready!"']
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 600  # Clean up job after 10 minutes
