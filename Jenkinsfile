@@ -93,7 +93,7 @@ pipeline {
  
                             echo "⏳ Waiting for deployments to complete..."
                             kubectl rollout status deployment/mongodb --timeout=300s
-                            kubectl rollout status deployment/fitness-tracker-app --timeout=300s
+                            kubectl rollout status deployment/restaurant-app --timeout=300s
  
                             echo "📊 Deployment status:"
                             kubectl get deployments
