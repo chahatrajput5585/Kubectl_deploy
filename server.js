@@ -30,10 +30,6 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-const tracer = require('dd-trace').init({
-  logInjection: true
-});
-
 // Set the view engine to ejs
 app.set("view engine", "ejs");
 
