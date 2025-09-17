@@ -15,13 +15,17 @@ spec:
       containers:
         - name: restaurant-app
           image: chahatrajput3008/restaurant-project-restaurant-app:latest
+          imagePullPolicy: Always   # ensures new image is pulled
           ports:
             - containerPort: 3000
           env:
             - name: MONGODB_URI
               value: "mongodb://mongodb-service:27017/restaurant"
             - name: JWT_SECRET
-              value: "my-strong-password-for-jwt-key"
+              valueFrom:
+                secretKeyRef:
+                  name: restaurant-secrets
+                  key: jwt-secret
             - name: PORT
               value: "3000"
             - name: NODE_ENV
@@ -39,9 +43,22 @@ spec:
             - name: DD_ENV
               value: "production"
             - name: DD_SERVICE
-              value: "nodejs-app"
+              value: "restaurant-app"
             - name: DD_VERSION
               value: "1.0.0"
+          # Optional: add probes to avoid CrashLoopBackOff due to slow start
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 20
+            periodSeconds: 10
 ---
 apiVersion: v1
 kind: Service
