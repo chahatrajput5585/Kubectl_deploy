@@ -30,6 +30,10 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
+const tracer = require('dd-trace').init({
+  logInjection: true
+});
+
 // Set the view engine to ejs
 app.set("view engine", "ejs");
 
@@ -47,3 +51,4 @@ app.listen(PORT, async () => {
   // console.log("starting...");
   console.log(`Server running on port ${PORT}  on http://localhost:${PORT}`);
 });
+
