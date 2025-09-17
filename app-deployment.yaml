@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: restaurant-app
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: restaurant-app
@@ -15,25 +15,17 @@ spec:
       containers:
         - name: restaurant-app
           image: chahatrajput3008/restaurant-project-restaurant-app:latest
-          imagePullPolicy: Always   # ensures new image is pulled
           ports:
             - containerPort: 3000
           env:
             - name: MONGODB_URI
               value: "mongodb://mongodb-service:27017/restaurant"
             - name: JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: restaurant-secrets
-                  key: jwt-secret
+              value: "my-strong-password-for-jwt-key"
             - name: PORT
               value: "3000"
             - name: NODE_ENV
               value: "production"
-            - name: TRUST_PROXY
-              value: "true"
-            - name: COOKIE_SECURE
-              value: "false"
 ---
 apiVersion: v1
 kind: Service
@@ -46,3 +38,4 @@ spec:
     - port: 80
       targetPort: 3000
   type: LoadBalancer
+
