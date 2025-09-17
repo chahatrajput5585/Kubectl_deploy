@@ -4,7 +4,7 @@ pipeline {
         DOCKER_IMAGE = "chahatrajput3008/restaurant-project-restaurant-app"
         DOCKER_TAG   = "${BUILD_NUMBER}"
         EKS_CLUSTER_NAME = "chahat-cluster"
-        AWS_REGION = "ap-southeast-1"
+        AWS_REGION = "us-west-2"
     }
     stages {
         stage('Checkout') {
