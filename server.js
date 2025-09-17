@@ -1,6 +1,4 @@
 const path = require("path");
-const cors = require("cors");
-
 require("dotenv").config({
   path: path.join(__dirname, ".env"),
   override: true,
@@ -15,16 +13,6 @@ const viewRouters = require("./routers/view/view-router");
 const api = require("./routers/api/api");
 
 const app = express();
-
-// Trust proxy for AWS Load Balancer
-if (process.env.TRUST_PROXY === 'true') {
-  app.set('trust proxy', 1);
-}
-
-app.use(cors({
-  credentials: true,
-  origin: true
-}));
 
 // app.use(morgan("combined"));
 app.use(express.json());
