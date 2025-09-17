@@ -33,6 +33,18 @@ spec:
             # Optionally set this to your root domain to make cookies work on subdomains too, e.g. ".example.com"
             # - name: COOKIE_DOMAIN
             #   value: ".your-domain.com"
+           - name: DD_AGENT_HOST
+             valueFrom:
+               fieldRef:
+                 fieldPath: status.hostIP
+           - name: DD_TRACE_AGENT_PORT
+             value: "8126"
+           - name: DD_ENV
+             value: "production"
+           - name: DD_SERVICE
+             value: "nodejs-app"
+           - name: DD_VERSION
+             value: "1.0.0"
 ---
 apiVersion: v1
 kind: Service
