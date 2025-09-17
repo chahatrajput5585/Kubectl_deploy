@@ -34,31 +34,6 @@ spec:
               value: "true"
             - name: COOKIE_SECURE
               value: "false"
-            - name: DD_AGENT_HOST
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
-            - name: DD_TRACE_AGENT_PORT
-              value: "8126"
-            - name: DD_ENV
-              value: "production"
-            - name: DD_SERVICE
-              value: "restaurant-app"
-            - name: DD_VERSION
-              value: "1.0.0"
-          # Optional: add probes to avoid CrashLoopBackOff due to slow start
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 3000
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 3000
-            initialDelaySeconds: 20
-            periodSeconds: 10
 ---
 apiVersion: v1
 kind: Service
